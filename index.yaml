@@ -1,0 +1,5 @@
+indexes:
+- kind: weather
+  properties:
+  - name: lat_long
+  - name: date

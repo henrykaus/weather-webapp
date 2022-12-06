@@ -1,0 +1,5 @@
+flask
+geopy
+google-cloud-datastore
+gunicorn
+Nominatim

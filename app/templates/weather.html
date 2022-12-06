@@ -1,0 +1,156 @@
+<!-- The main weather page to house the statistical data and form. -->
+{% extends "layout.html" %}
+{% block content %}
+    <!-- Top Row of Page -->
+    <div class="flex-container">
+
+        <!-- Input Form -->
+        <div class=center id="location-selector">
+            <h2>Weather</h2>
+            <p class="subtitle">Historical Weather Charter</p>
+            <form class="content-form" action="{{ url_for('weather') }}" method=post>
+                
+                <div>
+                    <input type=text class="input text-input" name=location value="{{location}}" placeholder="Enter location">
+                    <select class="dropdown-input input" name="preset">
+                        <option class=default-item value="none">Or select preset</option>
+                        <option value="Portland, OR">Portland, OR</option>
+                        <option value="Tigard, OR">Tigard, OR</option>
+                        <option value="Stanford University">Stanford University</option>
+                        <option value="Tilikum Crossing Bridge">Tilikum Crossing Bridge</option>
+                        <option value="Hershey, Pennsylvania">Hershey, Pennsylvania</option>
+                    </select>
+                </div>
+
+                <div>
+                    <input type=submit class="button-input normal-btn-input" value="Get Temps">
+                </div>
+
+            </form>
+        </div>
+
+        <!-- Graph Display -->
+        <div class="center" id="graph">
+            <canvas class="graph" id="weather-graph"></canvas> 
+            <script>
+                Chart.defaults.global.responsive = false;
+
+                // Graph canvas from HTML
+                var ctx = document.getElementById("weather-graph").getContext("2d");
+                
+                // Data and labels for Graph
+                const data = {
+                    labels: [{% for item in graph_labels %},
+                             "{{item}}"
+                             {% endfor %}],
+                    datasets: [{
+                        label: "Max Temp",
+                        data: [{% for item in graph_maxes %},
+                                {{item}}
+                               {% endfor %}],
+                        fill: false,
+                        lineTension: 0.1,
+                        backgroundColor: "rgba(255,73,46,0.4)",
+                        borderColor: "rgba(255,73,46,1)",
+                        borderCapStyle: 'round',
+                        borderJoinStyle: 'miter',
+                        pointBorderColor: "rgba(255,192,192,1)",
+                        pointBackgroundColor: "#ffffff",
+                        pointBorderWidth: 1,
+                        pointHoverRadius: 5,
+                        pointHoverBackgroundColor: "rgba(255,73,46,1)",
+                        pointHoverBorderColor: "rgba(220,220,220,1)",
+                        pointHoverBorderWidth: 2,
+                        pointRadius: 1,
+                        pointHitRadius: 12
+                    },{
+                        label: "Min Temp",
+                        data: [{% for item in graph_mins %},
+                                {{item}}
+                               {% endfor %}],
+                        fill: false,
+                        lineTension: 0.1,
+                        backgroundColor: "rgba(75,192,192,0.4)",
+                        borderColor: "rgba(75,192,192,1)",
+                        borderCapStyle: 'round',
+                        borderJoinStyle: 'miter',
+                        pointBorderColor: "rgba(75,192,192,1)",
+                        pointBackgroundColor: "#ffffff",
+                        pointBorderWidth: 1,
+                        pointHoverRadius: 5,
+                        pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                        pointHoverBorderColor: "rgba(220,220,220,1)",
+                        pointHoverBorderWidth: 2,
+                        pointRadius: 2,
+                        pointHitRadius: 12
+                    }]
+                };
+
+                // Options to customize labels
+                const options = {
+                    scales: {
+                        xAxes: [{
+                            display: true,
+                            ticks: {
+                                autoSkip: false,
+                                callback: function(label) {
+                                    var month = label.slice(5);
+                                    switch (month) {
+                                        case "01":
+                                            return label.slice(0,4);
+                                        default:
+                                            return "";
+                                    }
+                                },
+                                color: 'blue',
+                            },
+                            gridLines: {
+                                display: false
+                            }
+                        }]
+                    }
+                }
+
+                // Create the graph
+                var graph = new Chart(ctx, {
+                    type: 'line',
+                    data: data,
+                    options: options
+                });
+            </script>
+        </div>
+
+    </div>
+
+    <!-- Bottom Row of Page -->
+    <div class="flex-container">
+
+        <!-- Monthly Minimum Widget -->
+        <div class="center" id="month-min-widget">
+            <div class="title">{{month}}'s Min Temp</div>
+            <div class="widget-box">
+                <p class="widget-number">{{min_temp}}</p>
+            </div>
+        </div>
+
+        <!-- Monthly Maximum Widget -->
+        <div class="center" id="month-max-widget">
+            <div class="title">{{month}}'s Max Temp</div>
+            <div class="widget-box">
+                <p class="widget-number">{{max_temp}}</p>
+            </div>
+        </div>
+
+        <!-- Percent Difference from Last Year Widget -->
+        <div class="center" id="percent-widget">
+            <div class="title">% Difference from Last Year</div>
+            <div class="widget-box">
+                <p class="widget-number">{{percent}}%</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Disclaimer and More Info about the current request -->
+    <p>*Note: the information is only recent to 5 days ago from use. Specific location used: {{address}}</p>
+{% endblock %}

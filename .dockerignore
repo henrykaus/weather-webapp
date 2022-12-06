@@ -1,0 +1,9 @@
+/app/__pycache__
+/app/gbmodel/__pycache__
+env
+.dockerignore
+.gitignore
+Dockerfile
+index.yaml
+project_url.txt
+screencast_url.txt

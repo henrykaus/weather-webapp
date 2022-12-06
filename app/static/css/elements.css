@@ -1,0 +1,105 @@
+/* Rules for general custom page elements. */
+.center {
+    text-align: center;
+}
+
+.content-form {
+    width: 320px;
+    border: 1px
+}
+
+.graph {
+    height: 350px;
+    width: 766px; 
+    border: none;
+    background-color: #1f2029;
+    box-shadow: 10px 10px 15px 0 rgba(21,21,21,.8);
+    border-radius: 16px;
+    padding: 10px 10px 10px 10px;
+}
+
+.widget-box {
+    height: 170px;
+    width: 340px;
+    border: none;
+    background-color: #1f2029;
+    box-shadow: 10px 10px 15px 0 rgba(21,21,21,.8);
+    border-radius: 16px;
+    padding: 10px 10px 10px 10px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+/* For the Select Element */
+.default-item {
+    color: #88888d;
+}
+
+/* Rules for text and button inputs. */
+.input.text-input {
+    padding: 13px 17px 13px 17px;
+    height: 55px;
+    width: 100%;
+}
+
+.input.dropdown-input {
+    padding: 13px 17px 13px 17px;
+    height: 55px;
+    width: 100%;
+}
+
+.input {
+    margin-bottom: 7px;
+    margin-top: 7px;
+    border-radius: 4px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0.5px;
+    color: #d1d0d8;
+    background-color: #1f2029;
+    border: none;
+    transition: all 175ms linear;
+    box-shadow: 10px 10px 15px 0 rgba(21,21,21,.8);
+    box-sizing: border-box;
+}
+.input:focus,
+.input:active {
+    background-color: #343544;
+    border: none;
+    outline: none;
+    box-shadow: 17px 17px 15px 0 rgba(21,21,21,.8);
+}
+
+.button-input {
+    padding: 13px 22px 13px 22px;
+    height: 80px;
+    width: 200px;
+    margin-bottom: 5px;
+    margin-top: 15px;
+    border-radius: 40px;
+    font-size: 20px;
+    font-weight: 700;
+    font-family: "Poppins", serif;
+    line-height: 22px;
+    letter-spacing: 2px;
+    color: #eb9595; 
+    background-color: #292a35;
+    border: none;
+    transition: all 125ms linear;
+    box-shadow: 10px 10px 15px 0 rgba(21,21,21,.8);
+    box-sizing: border-box;
+}
+.button-input:hover{  
+    background-color: #343544;
+    color: #adefef; 
+    box-shadow: 17px 17px 15px 0 rgba(21,21,21,.8);
+}
+.button-input:focus,
+.button-input:active {
+    background-color: #1f2029;
+    color: #adefef; 
+    box-shadow: 17px 17px 15px 0 rgba(21,21,21,.8);
+}

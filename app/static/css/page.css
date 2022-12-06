@@ -1,0 +1,14 @@
+/* Rules for a two-row page */
+.main {
+    width: 1158px;
+    margin: 0 auto;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-container > div {
+    margin: 13px;
+}
