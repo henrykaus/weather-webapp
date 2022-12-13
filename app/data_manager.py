@@ -10,7 +10,7 @@ class DataManager():
         Manages interactions between DB and APIs -- Nominatim and Open-Meteo 
         Historical Weather.
         """
-        self.geolocator = Nominatim(user_agent="User")
+        self.geolocator = Nominatim(user_agent="Weather Max Temps")
         self.model = gbmodel.get_model()
 
 
@@ -61,17 +61,29 @@ class DataManager():
         :param: db_items: list of items returned from update_location_in_db()
         :return: Dictionary {"max_temp": float, "min_temp": float, "percent_diff": float}
         """
-        max_temp = db_items[-1][2]        
-        min_temp = db_items[-1][3]      
+        month_max_temp = db_items[-1][2]
+
+        # Calculate year's max temp
+        curr_index = -1
+        curr_year = db_items[curr_index][1][:4]
+        year_max_temp = db_items[curr_index][2]
+        item = db_items[curr_index]
+        while item[1][:4] == curr_year:
+            try:
+                year_max_temp = item[2] if item[2] > year_max_temp else year_max_temp
+                curr_index -= 1
+                item = db_items[curr_index]
+            except IndexError:
+                break
 
         # If less than one year of data in DB, then let percent_difference be infinite  
         try:
             last_year_weather_item = db_items[-13]
-            percent_difference = round(max_temp / last_year_weather_item[2] * 100 - 100, 2)
+            percent_difference = round(month_max_temp / last_year_weather_item[2] * 100 - 100, 2)
         except IndexError:
             percent_difference = float("inf")
 
-        return {"max_temp": max_temp, "min_temp": min_temp, "percent_diff": percent_difference}
+        return {"month_max_temp": month_max_temp, "year_max_temp": year_max_temp, "percent_diff": percent_difference}
 
 
     def get_graph_data(self, db_items: list) -> dict:
@@ -160,7 +172,7 @@ class DataManager():
         return filtered_items
 
 
-    def get_location_lat_long(self, location_name: str) -> str:
+    def get_location_lat_long(self, location_name: str) -> str | None:
         """
         Uses the Nominatim API to turn a location name into a lat/long coordinates.
         :param: location_name: String
@@ -170,7 +182,7 @@ class DataManager():
         return None if location is None else str(location.latitude)+','+str(location.longitude)
 
 
-    def get_location_address(self, location_name: str) -> str:
+    def get_location_address(self, location_name: str) -> str | None:
         """
         Uses Nominatim API to turn location name into the location used by Nominatim.
         :param: location_name: String
@@ -200,3 +212,9 @@ class DataManager():
         
         requested_date = date(2000, number, 1)
         return requested_date.strftime("%B")
+
+
+# TEST CODE
+data_manager = DataManager()
+data = data_manager.update_location_in_db("Tigard, OR")
+data_manager.get_widget_data(data)

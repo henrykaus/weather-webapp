@@ -15,7 +15,7 @@ class Weather(MethodView):
         """
         Accepts GET requests, and loads the empty weather page.
         """
-        return render_template('weather.html', maxtemp='-', mintemp='-', address='None', month='Month')
+        return render_template('weather.html', month_max_temp='-', year_max_temp='-', address='None', month='Month', year='Year')
 
 
     def post(self):
@@ -35,6 +35,7 @@ class Weather(MethodView):
         graph_items = self.data_manager.get_graph_data(db_items)
         address = self.data_manager.get_location_address(location)
         month = self.data_manager.get_month_from_number(int(db_items[-1][1][5:]))
+        year = db_items[-1][1][0:4]
 
-        return render_template('weather.html', max_temp=widget_data["max_temp"], min_temp=widget_data["min_temp"], percent=widget_data["percent_diff"], location=location, address=address, month=month, graph_maxes=graph_items["max_temps"], graph_mins=graph_items["min_temps"], graph_labels=graph_items["dates"])
+        return render_template('weather.html', month_max_temp=widget_data["month_max_temp"], year_max_temp=widget_data["year_max_temp"], percent=widget_data["percent_diff"], location=location, address=address, month=month, year=year, graph_maxes=graph_items["max_temps"], graph_labels=graph_items["dates"])
         
